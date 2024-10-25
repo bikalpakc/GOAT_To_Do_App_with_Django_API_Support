@@ -14,9 +14,12 @@ After logging in, To view or add tasks of that logged in user:
 http://127.0.0.1:8000/api/tasks/ 
 
 To update, delete or view details of the single task:
-http://127.0.0.1:8000/api/tasks/<task_name>
+http://127.0.0.1:8000/api/tasks/<task_name>/
 
 Screenshots of this project are also included in the repository.
+
+I am not a Front End developer so, I hope the UI doesnot bother you much haha.
+
 ![Screenshot 2024-10-25 101754](https://github.com/user-attachments/assets/b642ccc3-efbb-4915-bab0-5e08b4e8d8d0)
 ![Screenshot 2024-10-25 101837](https://github.com/user-attachments/assets/939c8e17-115c-433b-be19-d7e6471e49e0)
 ![Screenshot 2024-10-25 101929](https://github.com/user-attachments/assets/8a60a8bd-6005-408e-8c4b-244ef8ac38ff)
