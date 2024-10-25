@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block start %}
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="{% static 'css/home.css'%}">
+</head>
+
+<body>
+    <div class="todo-container">
+        <h1 class="heading">Tasks To Do</h1>
+        <ul class="task-list">
+            {% for task in all_tasks %}
+            <li class="task-item">
+                <span>Task {{forloop.counter}}: {{task.task_name}}</span>
+                <button class="delete-btn"
+                    onclick="location.href='/home/delete-task/{{task.task_name}}'">Delete</button>
+
+                <button class="reset-btn" onclick="location.href='/home/update-task/{{task.task_name}}'">Update</button>
+
+                {% if task.task_completed %}
+                <input type="checkbox" class="task-checkbox" checked="checked"
+                    onclick="location.href='/home/check-box/{{task.task_name}}'">
+
+                {% else %}
+                <input type="checkbox" class="task-checkbox"
+                    onclick="location.href='/home/check-box/{{task.task_name}}'">
+
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+        <button class="new-task-btn" onclick="showTaskForm()">+ New Task</button>
+        <button class="reset-btn" onclick="location.href='/home/reset'">Reset</button>
+        <button class="delete-btn" onclick="location.href='/home/delete-all'">Delete All</button>
+    </div>
+
+    <!-- New Task Form (Initially Hidden) -->
+    <form method="post" enctype="multipart/form-data">
+        <div class="task-form hidden">
+            {% csrf_token %}
+            <input type="text" id="new-task-input" placeholder="Enter task" class="task-input" name="enter_task">
+            <button class="add-task-btn" type="submit">Add</button>
+            <button class="cancel-task-btn" onclick="hideTaskForm()">Cancel</button>
+        </div>
+    </form>
+
+    <div class="congratulations hidden">
+        <img src="{% static 'images/green tick.png'%}" alt="Green Tick" class="green-tick">
+        <h2>Congratulations! All Tasks Completed</h2>
+    </div>
+
+    <script src="{% static 'js/home.js'%}"></script>
+</body>
+
+</html>
+
+{% endblock %}

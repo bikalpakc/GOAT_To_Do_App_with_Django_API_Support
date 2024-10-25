@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Profile Picture</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+        }
+
+        .container {
+            margin: 0 auto;
+            width: 300px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #skipBtn,
+        #addBtn {
+            padding: 10px 20px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #skipBtn {
+            background-color: #ff6b6b;
+            color: white;
+        }
+
+        #addBtn {
+            background-color: #4CAF50;
+            color: white;
+            display: none;
+        }
+
+        input[type="file"] {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Upload Your Profile Picture</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" id="profile_picture" name="profile_picture" accept="image/*"><br>
+            <button type="button" id="skipBtn" onclick="location.href='/home'">Skip</button>
+
+            <button type="submit" id="add-Btn" name="add-profile-picture">Add</button>
+        </form>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('profilePicture');
+        const addBtn = document.getElementById('addBtn');
+
+        fileInput.addEventListener('change', function () {
+            if (this.files.length > 0) {
+                addBtn.style.display = 'inline-block';
+            } else {
+                addBtn.style.display = 'none';
+            }
+        });
+    </script>
+
+</body>
+
+</html>
