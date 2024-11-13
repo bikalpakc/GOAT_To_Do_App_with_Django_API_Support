@@ -43,6 +43,31 @@
         <button class="delete-btn" onclick="location.href='/home/delete-all'">Delete All</button>
     </div>
 
+    <div class="todo-container">
+        <h1 class="heading">Tasks stored in Kafka Server</h1>
+        <ul class="task-list">
+            {% for task in kafka_server_tasks %}
+            <li class="task-item">
+                <span>Task {{forloop.counter}}: {{task.task_name}}</span>
+                <button class="delete-btn"
+                    onclick="location.href='/home/delete-task/{{task.task_name}}'">Delete</button>
+
+                <button class="reset-btn" onclick="location.href='/home/update-task/{{task.task_name}}'">Update</button>
+
+                {% if task.task_completed %}
+                <input type="checkbox" class="task-checkbox" checked="checked"
+                    onclick="location.href='/home/check-box/{{task.task_name}}'">
+
+                {% else %}
+                <input type="checkbox" class="task-checkbox"
+                    onclick="location.href='/home/check-box/{{task.task_name}}'">
+
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
     <!-- New Task Form (Initially Hidden) -->
     <form method="post" enctype="multipart/form-data">
         <div class="task-form hidden">

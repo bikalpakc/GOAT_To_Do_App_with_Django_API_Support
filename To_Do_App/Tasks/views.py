@@ -4,6 +4,8 @@ from .models import *
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from kafka import KafkaProducer, KafkaConsumer
+import json
 
 # Create your views here.
 
@@ -15,6 +17,13 @@ def home_page(request):
      task_name=data.get('enter_task')
      print(task_name)
 
+     #Send the input/received data to Kafka Server
+     producer = KafkaProducer(bootstrap_servers="localhost:29092")
+     producer.send("task details", json.dumps(data).encode("utf-8")) #'task_details' is a Kafka Topic Name
+     print(f"Done Sending..")
+
+     #Create the Task object and store details in Database.
+
      Tasks.objects.create(
         task_name=task_name,
         task_completed=False,
@@ -25,12 +34,15 @@ def home_page(request):
      )
      return redirect("/home/")
     
+    consumer = KafkaConsumer('task_details', bootstrap_servers='localhost:29092') #Retrieves Task details from Kafka Server. 'task_details' is a Kafka topic from where,we retrieve or store data.
+    kafka_server_data=json.loads(consumer)
+
     all_tasks=Tasks.objects.filter(user=request.user.id)  #user=request.user.id bhako user ko task haru matrai dekhauni where (request.user.id) gives the id of currently logged in user
    #  context1={'all_tasks': all_tasks}
 
    #  context2={'first_task': all_tasks[0]}           #for displaying name in the home page(i.e. base model), passing another context by referencing to only one task(so that we get object instead of list and so that we don't have to use loop in the home page(base.html) to display user's name and image). Basically, this is just to identify the user through a task.
 
-    context={'all_tasks': all_tasks, 'first_task': all_tasks.first()}
+    context={'all_tasks': all_tasks, 'first_task': all_tasks.first(), 'kafka_server_tasks': kafka_server_data}
     return render(request, 'home.html', context)
 
 # #Class view for the Home page
